@@ -1,42 +1,24 @@
-import React, {memo, useEffect, useState} from 'react';
-import {CommonPageProps} from './types';
 import {Col, Row} from 'react-bootstrap';
 import {useParams} from 'react-router-dom';
-import {ContactDto} from 'src/types/dto/ContactDto';
-import {GroupContactsDto} from 'src/types/dto/GroupContactsDto';
 import {GroupContactsCard} from 'src/components/GroupContactsCard';
 import {Empty} from 'src/components/Empty';
 import {ContactCard} from 'src/components/ContactCard';
+import { useAppSelector } from 'src/redux/hooks';
 
-export const GroupPage = memo<CommonPageProps>(({
-  contactsState,
-  groupContactsState
-}) => {
-
-  console.log('group page render')
+export const GroupPage = () => {
   const {groupId} = useParams<{ groupId: string }>();
-  const [contacts, setContacts] = useState<ContactDto[]>([]);
-  const [groupContacts, setGroupContacts] = useState<GroupContactsDto>();
-
-  useEffect(() => {
-    const findGroup = groupContactsState[0].find(({id}) => id === groupId);
-    setGroupContacts(findGroup);
-    setContacts(() => {
-      if (findGroup) {
-        return contactsState[0].filter(({id}) => findGroup.contactIds.includes(id))
-      }
-      return [];
-    });
-  }, [groupId]);
+  const {contacts,contactGroups} = useAppSelector(state => state.contacts)
+  const foundGroup = contactGroups.find(({id}) =>id === groupId)
 
   return (
     <Row className="g-4">
-      {groupContacts ? (
+      {foundGroup ? (
         <>
           <Col xxl={12}>
             <Row xxl={3}>
               <Col className="mx-auto">
-                <GroupContactsCard groupContacts={groupContacts} />
+              
+                <GroupContactsCard groupContacts={foundGroup} />
               </Col>
             </Row>
           </Col>
@@ -53,4 +35,4 @@ export const GroupPage = memo<CommonPageProps>(({
       ) : <Empty />}
     </Row>
   );
-});
+}
