@@ -5,8 +5,6 @@ const reducer = contactsApiSlice.reducer
 export default reducer
 
 export const {useGetContactsQuery} = contactsApiSlice
-
-
 export const contactsReducerPath   = contactsApiSlice.reducerPath
 export const contactsMiddleware = contactsApiSlice.middleware
 

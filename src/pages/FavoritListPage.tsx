@@ -4,13 +4,10 @@ import { useAppSelector } from 'src/redux/hooks';
 import { useGetContactsQuery } from 'src/redux/contacts';
 
 export const FavoritListPage = () => {
-  console.log('fav render')
   const {data:contacts} = useGetContactsQuery()
   const {favouriteContacts} = useAppSelector(state => state.contacts)
   const filteredContacts = contacts?.filter(contact => favouriteContacts.includes(contact.id))
   
-  console.log('contacts:',contacts)
-  console.log('favs:',favouriteContacts)
 
   return (
     <Row xxl={4} className="g-4">
