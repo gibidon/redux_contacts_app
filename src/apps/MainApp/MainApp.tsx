@@ -27,7 +27,7 @@ export const MainApp = () => {
               <Route path=":contactId" element={
                 <ContactPage />
               } /> 
-            </Route>
+            </Route> 
             <Route path="groups">
               <Route index element={
                 <GroupListPage />
@@ -36,7 +36,7 @@ export const MainApp = () => {
                 <GroupPage />
               } />
             </Route>
-            <Route path="favorit" element={
+             <Route path="favorit" element={
               <FavoritListPage  />
             } />
           </Route>
