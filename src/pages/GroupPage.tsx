@@ -3,21 +3,16 @@ import {useParams} from 'react-router-dom';
 import {GroupContactsCard} from 'src/components/GroupContactsCard';
 import {Empty} from 'src/components/Empty';
 import {ContactCard} from 'src/components/ContactCard';
-import { useGetContactsQuery } from 'src/redux/contacts';
-import { useGetContactGroupsQuery } from 'src/redux/contactGroups';
 import { contactStore } from 'src/store/contactStore';
 import { contactGroupStore } from 'src/store/contactGroupStore';
 
 
 export const GroupPage = () => {
   const {groupId} = useParams<{ groupId: string }>();
-  // const {data:contacts} = useGetContactsQuery()
   const contacts = contactStore.contacts
-  // const {data:contactGroups}= useGetContactGroupsQuery()
   const contactGroups = contactGroupStore.contactGroups
   const foundGroup = contactGroups?.find(({id}) =>id === groupId)
 
-  console.log('g',contacts,contactGroups)
   return (
     <Row className="g-4">
       {foundGroup ? (
