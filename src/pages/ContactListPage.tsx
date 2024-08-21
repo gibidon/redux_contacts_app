@@ -1,21 +1,19 @@
 import {Col, Row} from 'react-bootstrap';
 import {ContactCard} from 'src/components/ContactCard';
-import {FilterForm, FilterFormValues} from 'src/components/FilterForm';
-import { useEffect, useState } from 'react';
-import {  filterContacts } from 'src/utils/filterContacts';
-import { observer } from 'mobx-react-lite';
 import { contactStore } from 'src/store/contactStore';
 import { contactGroupStore } from 'src/store/contactGroupStore';
+import { filterStore } from 'src/store/filterStore';
+import {FilterForm, FilterFormValues} from 'src/components/FilterForm';
+import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 
 export const ContactListPage = observer(() => {
-  const contacts = contactStore.contacts
   const contactGroups= contactGroupStore.contactGroups 
-
-  const [filterValues,setFilterValues] = useState({name:'',groupId:''})
-  const filteredContacts = filterContacts(filterValues,contacts,contactGroups)
+  const filteredContacts = contactStore.filteredContacts
 
   const onSubmit = (fv: Partial<FilterFormValues>) => {
-    setFilterValues({...filterValues,'name':fv.name ??'','groupId':fv.groupId ?? ''})
+    filterStore.name = fv.name || ''
+    filterStore.contactGroup = fv.groupId || ''
   }
 
   useEffect(() => {contactStore.get();contactGroupStore.get()},[])

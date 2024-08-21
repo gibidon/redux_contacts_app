@@ -1,7 +1,6 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Layout} from 'src/components/Layout';
 import {ContactListPage, GroupPage, ContactPage, FavoritListPage, GroupListPage} from 'src/pages';
-import { Provider } from 'react-redux';
 import {ThemeProvider} from 'react-bootstrap';
 import './MainApp.scss';
 

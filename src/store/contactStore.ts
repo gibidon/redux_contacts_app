@@ -2,14 +2,16 @@ import { makeAutoObservable } from "mobx";
 import { ContactDto } from "src/types/dto/ContactDto";
 import { api } from "src/api";
 import { filterContacts } from "src/utils/filterContacts";
-
+import { contactGroupStore } from "./contactGroupStore";
+import { filterStore } from "./filterStore";
 
 interface ContactStore {
     contacts:Array<ContactDto> | undefined,
     favouriteContacts:Array<ContactDto['id']>
     get():Generator<Promise<ContactDto[]>,void,ContactDto[]>
+    filteredContacts:Array<ContactDto>
+      
 }
-
 
 export const contactStore = makeAutoObservable<ContactStore>({
     contacts:[],
@@ -21,8 +23,7 @@ export const contactStore = makeAutoObservable<ContactStore>({
             contactStore.contacts = result
         }
     },
-
-    // get filteredContacts(){
-    //     return filterContacts()
-    // }
+    get filteredContacts(){
+        return filterContacts({name:filterStore.name,groupId:filterStore.contactGroup},this.contacts,contactGroupStore.contactGroups)
+    }
 })
