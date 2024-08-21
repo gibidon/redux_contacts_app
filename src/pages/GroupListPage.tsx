@@ -1,9 +1,9 @@
 import {Col, Row} from 'react-bootstrap';
 import {GroupContactsCard} from 'src/components/GroupContactsCard';
-import { useGetContactGroupsQuery } from 'src/redux/contactGroups';
+import { contactGroupStore } from 'src/store/contactGroupStore';
 
 export const GroupListPage = () => {
-  const {data:contactGroups} = useGetContactGroupsQuery()
+  const contactGroups = contactGroupStore.contactGroups
   
   return (
     <Row xxl={4}>

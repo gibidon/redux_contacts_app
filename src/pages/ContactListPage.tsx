@@ -1,21 +1,22 @@
 import {Col, Row} from 'react-bootstrap';
 import {ContactCard} from 'src/components/ContactCard';
+import { contactStore } from 'src/store/contactStore';
+import { contactGroupStore } from 'src/store/contactGroupStore';
+import { filterStore } from 'src/store/filterStore';
 import {FilterForm, FilterFormValues} from 'src/components/FilterForm';
-import { useGetContactsQuery } from 'src/redux/contacts';
-import { useState } from 'react';
-import { useGetContactGroupsQuery } from 'src/redux/contactGroups';
-import {  filterContacts } from 'src/utils/filterContacts';
+import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 
-
-export const ContactListPage = () => {
-  const {data:contacts,isLoading} = useGetContactsQuery()
-  const {data:contactGroups} = useGetContactGroupsQuery() 
-  const [filterValues,setFilterValues] = useState({name:'',groupId:''})
-  const filteredContacts = filterContacts(filterValues,contacts,contactGroups)
+export const ContactListPage = observer(() => {
+  const contactGroups= contactGroupStore.contactGroups 
+  const filteredContacts = contactStore.filteredContacts
 
   const onSubmit = (fv: Partial<FilterFormValues>) => {
-    setFilterValues({...filterValues,['name']:fv.name ??'',['groupId']:fv.groupId ?? ''})
+    filterStore.setName(fv.name || '')
+    filterStore.setContactGroup(fv.groupId || '')
   }
+
+  useEffect(() => {contactStore.get();contactGroupStore.get()},[])
 
   return (
     <Row xxl={1}>
@@ -23,7 +24,7 @@ export const ContactListPage = () => {
         <FilterForm groupContactsList={contactGroups ?? []} initialValues={{}} onSubmit={onSubmit} />
       </Col>
       <Col>
-      {isLoading ? <div>Loading data..</div> : 
+      {
        <Row xxl={4} className="g-4">
           {filteredContacts.map((contact) => (
             <Col key={contact.id}>
@@ -32,7 +33,8 @@ export const ContactListPage = () => {
           ))}
         </Row>
       }
+      
       </Col>
     </Row>
   );
-}
+})

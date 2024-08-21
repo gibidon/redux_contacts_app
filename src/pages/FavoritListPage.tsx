@@ -1,14 +1,16 @@
 import {Col, Row} from 'react-bootstrap';
 import {ContactCard} from 'src/components/ContactCard';
-import { useAppSelector } from 'src/redux/hooks';
-import { useGetContactsQuery } from 'src/redux/contacts';
+import { contactStore } from 'src/store/contactStore';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 
-export const FavoritListPage = () => {
-  const {data:contacts} = useGetContactsQuery()
-  const {favouriteContacts} = useAppSelector(state => state.contacts)
+export const FavoritListPage = observer(() => {
+  const contacts = contactStore.contacts
+  const favouriteContacts = contactStore.favouriteContacts
   const filteredContacts = contacts?.filter(contact => favouriteContacts.includes(contact.id))
-  
 
+  useEffect(() => {contactStore.get()},[])
+  
   return (
     <Row xxl={4} className="g-4">
       {filteredContacts?.map((contact) => (
@@ -18,4 +20,4 @@ export const FavoritListPage = () => {
       ))}
     </Row>
   )
-}
+})
