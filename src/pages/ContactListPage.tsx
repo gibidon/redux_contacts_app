@@ -12,8 +12,8 @@ export const ContactListPage = observer(() => {
   const filteredContacts = contactStore.filteredContacts
 
   const onSubmit = (fv: Partial<FilterFormValues>) => {
-    filterStore.name = fv.name || ''
-    filterStore.contactGroup = fv.groupId || ''
+    filterStore.setName(fv.name || '')
+    filterStore.setContactGroup(fv.groupId || '')
   }
 
   useEffect(() => {contactStore.get();contactGroupStore.get()},[])
